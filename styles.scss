@@ -1,0 +1,834 @@
+@charset "utf-8";
+$base: #333333;
+$bg: #eefbfb;
+$shadow: rgba(0, 0, 0, 0.16);
+$border: #e5e5e5;
+$header: 94px;
+
+// pcファースト
+$tb: 1022px;
+$sp: 700px;
+
+@mixin tb {
+  @media (max-width: ($tb)) {
+    @content;
+  }
+}
+
+@mixin sp {
+  @media (max-width: ($sp)) {
+    @content;
+  }
+}
+
+@mixin sp_to_tb {
+  @media screen and (min-width: $sp+1px) and (max-width: 1022px) {
+    @content;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: $base;
+  cursor: pointer;
+}
+
+li {
+  list-style: none;
+}
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  color: $base;
+  font-weight: bold;
+  @include sp {
+    // レスポンシブ時の高さ対策
+    height: 100%;
+  }
+}
+
+// 共通スタイル
+.wrapper {
+  max-width: 1022px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+  @include sp {
+    margin-bottom: 50px;
+  }
+}
+
+.btn {
+  color: white;
+  display: inline-block;
+  border-radius: 5px;
+  text-align: center;
+  padding-top: 7px;
+  padding-bottom: 10px;
+  width: 155px;
+  font-size: 16px;
+  font-weight: bold;
+  background: transparent linear-gradient(90deg, #fa41cc 0%, #6020b0 100%) 0% 0% no-repeat padding-box;
+}
+
+.title-box {
+  text-align: center;
+  h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    @include tb {
+      font-size: 24px;
+    }
+    @include sp {
+      font-size: 20px;
+    }
+  }
+
+  p {
+    color: #3ba6c9;
+  }
+}
+
+.wrap {
+  overflow: hidden;
+  // レスポンシブ時の高さ対策
+  @include sp {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+}
+// 共通スタイル終わり
+
+// ヘッダー
+.header {
+  height: 94px;
+  box-shadow: 0 3px 5px 3px $shadow;
+  position: fixed;
+  z-index: 999;
+  width: 100vw;
+  background: white;
+
+  &-inner {
+    height: 100%;
+    max-width: 1022px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    #nav-drawer {
+      position: relative;
+    }
+
+    /*チェックボックス等は非表示に*/
+    .nav-unshown {
+      display: none;
+    }
+
+    /*アイコンのスペース*/
+    #nav-open {
+      display: none;
+    }
+    @include sp {
+      #nav-open {
+        display: inline-block;
+        width: 30px;
+        height: 22px;
+        vertical-align: middle;
+      }
+    }
+
+    /*ハンバーガーアイコンをCSSだけで表現*/
+    #nav-open span,
+    #nav-open span:before,
+    #nav-open span:after {
+      position: absolute;
+      height: 3px; /*線の太さ*/
+      width: 25px; /*長さ*/
+      border-radius: 3px;
+      background: #555;
+      display: block;
+      content: "";
+      cursor: pointer;
+    }
+    #nav-open span:before {
+      bottom: -8px;
+    }
+    #nav-open span:after {
+      bottom: -16px;
+    }
+
+    /*閉じる用の薄黒カバー*/
+    #nav-close {
+      display: none; /*はじめは隠しておく*/
+      position: fixed;
+      z-index: 99;
+      top: 0; /*全体に広がるように*/
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0;
+      transition: 0.3s ease-in-out;
+    }
+
+    /*中身*/
+    #nav-content {
+      overflow: auto;
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 9999; /*最前面に*/
+      width: 50%; /*右側に隙間を作る（閉じるカバーを表示）*/
+      max-width: 330px; /*最大幅（調整してください）*/
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      transition: 0.3s ease-in-out; /*滑らかに表示*/
+      -webkit-transform: translateX(100%);
+      transform: translateX(100%); /*左に隠しておく*/
+    }
+
+    .drawer-item {
+      padding: 20px;
+    }
+
+    /*チェックが入ったらもろもろ表示*/
+    #nav-input:checked ~ #nav-close {
+      display: block; /*カバーを表示*/
+      opacity: 0.5;
+    }
+
+    #nav-input:checked ~ #nav-content {
+      -webkit-transform: translateX(0%);
+      transform: translateX(0%); /*中身を表示（右へスライド）*/
+      box-shadow: 6px 0 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      img {
+        width: 47px;
+        height: 47px;
+        margin-right: 16px;
+        @include tb {
+          width: 35px;
+          height: 35px;
+        }
+      }
+      h1 {
+        font-size: 24px;
+        color: $base;
+        @include tb {
+          font-size: 20px;
+        }
+      }
+    }
+
+    @include sp {
+      .header-right {
+        display: none;
+      }
+    }
+
+    .header-menu-box {
+      @include sp {
+        display: none;
+      }
+    }
+    .header-menu {
+      display: flex;
+      .menu-item {
+        margin-left: 46px;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+// ヘッダー終わり
+
+// メインビュー
+.mv {
+  height: 674px + $header;
+  // ヘッダーがfixedなので
+  background-image: url(img/circle.png);
+  background-repeat: no-repeat;
+  background-position: 53vw -4vh;
+  @include sp {
+    flex: 1;
+  }
+  .wrapper {
+    padding-top: 131px + $header;
+    // ヘッダーがfixedなので
+    display: flex;
+    justify-content: space-between;
+    @include sp {
+      display: block;
+      padding-top: 50px + $header;
+    }
+    .mv-left {
+      order: 1;
+      h1 {
+        padding-top: 28px;
+        font-size: 32px;
+        line-height: 1.5;
+        margin-bottom: 44px;
+        @include tb {
+          font-size: 24px;
+        }
+        @include sp {
+          text-align: left;
+        }
+      }
+      p {
+        line-height: 1.5;
+        margin-bottom: 45px;
+        @include sp {
+          text-align: left;
+        }
+      }
+    }
+    .mv-right {
+      order: 2;
+      @include sp {
+        text-align: center;
+      }
+      img {
+        width: 518px;
+        height: auto;
+        @include tb {
+          width: 80%;
+          float: right;
+        }
+        @include sp {
+          float: none;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    }
+  }
+}
+
+#fetuers {
+  height: 1809px;
+  @include tb {
+    height: 1650px;
+  }
+  @include sp {
+    flex: 2;
+  }
+  .wrapper {
+    padding-top: 71px;
+    .title-box {
+      margin-bottom: 57px;
+    }
+    .contents {
+      .content-wrap {
+        &:first-child {
+          margin-bottom: 86px;
+          @include sp {
+            margin-bottom: 80px;
+          }
+        }
+        &:nth-child(2) {
+          margin-bottom: 136px;
+          @include sp {
+            margin-bottom: 80px;
+          }
+        }
+        .fetuers-copy {
+          font-size: 28px;
+          text-align: center;
+          @include tb {
+            font-size: 24px;
+          }
+          @include sp {
+            font-size: 20px;
+          }
+        }
+        .content {
+          display: flex;
+          justify-content: space-between;
+          @include sp {
+            display: block;
+            text-align: center;
+          }
+          .info {
+            .fetuers-subcopy {
+              font-size: 24px;
+              line-height: 2;
+              @include tb {
+                font-size: 18px;
+              }
+              @include sp {
+                text-align: left;
+                br {
+                  display: none;
+                }
+              }
+            }
+            .subcopy1 {
+              margin-bottom: 45px;
+              @include sp {
+                margin-bottom: 20px;
+              }
+            }
+            .subcopy2 {
+              margin-bottom: 40px;
+              @include sp {
+                margin-bottom: 20px;
+              }
+            }
+            .subcopy3 {
+              margin-bottom: 33px;
+              @include sp {
+                margin-bottom: 20px;
+              }
+            }
+            p {
+              line-height: 1.5;
+              @include tb {
+                font-size: 15px;
+              }
+              @include sp {
+                text-align: left;
+                br {
+                  display: none;
+                }
+              }
+            }
+          }
+          .img-box {
+            img {
+              width: 100%;
+              @include tb {
+                width: 80%;
+              }
+              @include sp {
+                width: 50%;
+              }
+            }
+          }
+        }
+
+        .img-box1 {
+          margin-top: 49px;
+        }
+        .info1 {
+          margin-top: 96px;
+        }
+
+        .img-box2 {
+          margin-top: 59px;
+          order: 2;
+          @include sp_to_tb {
+            img {
+              float: right;
+            }
+          }
+        }
+        .info2 {
+          margin-top: 56px;
+          order: 1;
+        }
+
+        .img-box3 {
+          margin-top: 62px;
+        }
+        .info3 {
+          margin-top: 82px;
+        }
+
+        @include sp {
+          .img-box {
+            margin-top: 40px;
+          }
+          .info {
+            margin-top: 30px;
+          }
+        }
+      }
+    }
+  }
+}
+
+#price {
+  height: 744px;
+  background: $bg;
+  @include sp {
+    flex: 3;
+  }
+  .wrapper {
+    padding-top: 55px;
+    .price-table {
+      margin-top: 70px;
+      width: 94.5%;
+      height: 410px;
+      margin-left: auto;
+      margin-right: auto;
+      background: white;
+      box-shadow: 0px 3px 6px $shadow;
+      @include sp {
+        font-size: 14px;
+      }
+
+      tr {
+        height: 25%;
+        border: 1px solid $border;
+      }
+      th {
+        width: 32%;
+        border-right: 1px solid $border;
+        vertical-align: middle;
+        text-align: left;
+        padding-left: 19px;
+        @include tb {
+          width: 40%;
+        }
+        @include sp {
+          width: 60%;
+        }
+      }
+      td {
+        padding-left: 30px;
+        width: 68%;
+        vertical-align: middle;
+        @include tb {
+          width: 60%;
+        }
+        @include sp {
+          width: 40%;
+        }
+      }
+    }
+    p {
+      text-align: center;
+      margin-top: 36px;
+      @include sp {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.faq {
+  height: 686px;
+  @include sp {
+    flex: 4;
+  }
+  .wrapper {
+    padding-top: 55px;
+    .accordion-box {
+      width: 92.5%;
+      font-size: 14px;
+      margin-top: 32px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid $border;
+      @include sp {
+        font-size: 12px;
+      }
+      .toggle {
+        display: inline-block;
+        width: 100%;
+        padding-top: 18px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid $border;
+      }
+      .inner {
+        border-bottom: 1px solid $border;
+        line-height: 1.5;
+        text-align: left;
+        background: #f2f2f2;
+        li {
+          padding: 24px 87px 26px 35px;
+          @include tb {
+            padding-right: 35px;
+          }
+        }
+        .pd {
+          padding-top: 17px;
+          padding-bottom: 30px;
+        }
+      }
+      .child {
+        display: none;
+      }
+      .active {
+        display: block;
+      }
+    }
+  }
+}
+
+.blog {
+  @include sp {
+    flex: 5;
+  }
+  height: 668px;
+  background: $bg;
+  @include sp {
+    height: 1550px;
+  }
+  .wrapper {
+    padding-top: 55px;
+    .cards {
+      margin-top: 54px;
+      display: flex;
+      justify-content: center;
+      @include sp {
+        display: block;
+      }
+      .card {
+        width: 33%;
+        margin-left: 3%;
+        background: white;
+        box-shadow: 0px 3px 6px $shadow;
+        @include sp {
+          width: 65%;
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 5%;
+        }
+        &:first-child {
+          margin-left: 0;
+          @include sp {
+            margin-left: auto;
+          }
+        }
+        img {
+          width: 100%;
+        }
+        &-info {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          height: 127px;
+          padding: 14px 31px 10px 18px;
+          @include tb {
+            padding: 7px 15px 5px 9px;
+          }
+          p {
+            font-size: 18px;
+            line-height: 1.2;
+            @include tb {
+              font-size: 16px;
+            }
+          }
+          time {
+            margin-top: auto;
+            margin-left: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+.works {
+  @include sp {
+    flex: 6;
+  }
+  height: 701px;
+  .wrapper {
+    padding-top: 55px;
+    .swiper-container {
+      margin-top: 68px;
+      .swiper-wrapper {
+        @include sp {
+          width: 65%;
+        }
+        .swiper-slide {
+          border: 1px solid $border;
+          border-radius: 9px;
+          .item {
+            img {
+              width: 100%;
+            }
+
+            &-info {
+              display: flex;
+              flex-direction: column;
+              padding: 19px 16px 40px 18px;
+              line-height: 1.5;
+              @include sp {
+                font-size: 14px;
+                padding: 10px 8px 20px 9px;
+              }
+              .detail {
+                font-size: 14px;
+                margin-top: 30px;
+                margin-right: auto;
+                @include sp {
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#contact {
+  @include sp {
+    flex: 7;
+  }
+  height: 1027px;
+  background: transparent linear-gradient(90deg, #05a5fa 0%, #63fbd7 100%, #67ffd6 100%) 0% 0% no-repeat padding-box;
+  .wrapper {
+    padding-top: 63px;
+    .title-box {
+      color: white;
+      p {
+        color: white;
+      }
+    }
+    .contact-copy {
+      text-align: center;
+      color: white;
+      margin-top: 36px;
+      margin-bottom: 44px;
+      line-height: 1.5;
+    }
+    .contact-box {
+      padding-left: 62px;
+      padding-top: 34px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 92.5%;
+      height: 689px;
+      background: white;
+      box-shadow: 0px 3px 6px $shadow;
+      @include sp {
+        padding-left: 20px;
+      }
+      .box {
+        display: flex;
+        flex-direction: column;
+        label {
+          margin-bottom: 39px;
+          .req {
+            display: inline-block;
+            background: #0c449b;
+            font-size: 14px;
+            color: white;
+            padding: 4px 16px 6px 16px;
+            border-radius: 5px;
+            margin-left: 23px;
+          }
+        }
+        input,
+        textarea {
+          background: $bg;
+          border-radius: 3px;
+          border: none;
+          border: 1px solid $border;
+        }
+
+        input {
+          height: 43px;
+          width: 59%;
+          @include sp {
+            width: 90%;
+          }
+        }
+        textarea {
+          height: 179px;
+          width: 92.5%;
+          @include sp {
+            width: 90%;
+          }
+        }
+        .name {
+          margin-bottom: 27px;
+        }
+        .email {
+          margin-bottom: 21px;
+        }
+      }
+      .agree {
+        margin-top: 27px;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .submit {
+        text-align: center;
+        margin-right: auto;
+        margin-left: auto;
+        display: block;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        &[disabled] {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+      .end-message,
+      .false-message {
+        font-size: 20px;
+        text-align: center;
+        display: none;
+        @include sp {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  height: 244px;
+  @include sp {
+    height: 200px;
+  }
+  .wrapper {
+    text-align: center;
+    padding-top: 43px;
+    h3 {
+      font-size: 24px;
+      @include sp {
+        font-size: 20px;
+      }
+    }
+    .footer-list {
+      margin-top: 21px;
+      margin-bottom: 52px;
+      display: flex;
+      justify-content: center;
+      @include sp {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 30px;
+      }
+      li {
+        margin-left: 29px;
+        @include sp {
+          margin-left: 0;
+          margin-top: 20px;
+        }
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+    p {
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+}
