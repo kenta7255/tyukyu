@@ -288,6 +288,29 @@ body {
   margin-left: 0;
 }
 
+@media (max-width: 700px) {
+  _::-webkit-full-page-media,
+  _:future,
+  :root .mv {
+    height: 200%;
+  }
+  _::-webkit-full-page-media,
+  _:future,
+  :root #fetuers {
+    height: 200%;
+  }
+  _::-webkit-full-page-media,
+  _:future,
+  :root .blog {
+    height: 200%;
+  }
+  _::-webkit-full-page-media,
+  _:future,
+  :root .works {
+    height: 200%;
+  }
+}
+
 .mv {
   height: 768px;
   background-image: url(img/circle.png);
@@ -803,7 +826,7 @@ body {
 
 @media (max-width: 700px) {
   .blog .wrapper .cards .card {
-    width: 65%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 5%;
@@ -881,12 +904,6 @@ body {
   margin-top: 68px;
 }
 
-@media (max-width: 700px) {
-  .works .wrapper .swiper-container .swiper-wrapper {
-    width: 65%;
-  }
-}
-
 .works .wrapper .swiper-container .swiper-wrapper .swiper-slide {
   border: 1px solid #e5e5e5;
   border-radius: 9px;
@@ -962,7 +979,6 @@ body {
 }
 
 #contact .wrapper .contact-box {
-  padding-left: 62px;
   padding-top: 34px;
   margin-left: auto;
   margin-right: auto;
@@ -973,12 +989,6 @@ body {
           box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 }
 
-@media (max-width: 700px) {
-  #contact .wrapper .contact-box {
-    padding-left: 20px;
-  }
-}
-
 #contact .wrapper .contact-box .box {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -987,6 +997,13 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  padding-left: 62px;
+}
+
+@media (max-width: 700px) {
+  #contact .wrapper .contact-box .box {
+    padding-left: 20px;
+  }
 }
 
 #contact .wrapper .contact-box .box label {
@@ -1043,8 +1060,8 @@ body {
 
 #contact .wrapper .contact-box .agree {
   margin-top: 27px;
-  text-align: center;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 #contact .wrapper .contact-box .submit {

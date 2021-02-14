@@ -14,4 +14,7 @@ $(function () {
     $("html,body").animate({ scrollTop: position }, speed, "swing");
 
   });
+  $('.drawer-menu a[href]').click(function () {
+    $('#nav-input').prop('checked', false);
+  });
 });
